@@ -1262,3 +1262,348 @@ p { text-wrap: pretty; max-width: 68ch; }
     transform: none;
   }
 }
+
+/* ============================================================
+   MOBILE ENHANCEMENTS — Comprehensive polish for ≤ 480px
+   ============================================================ */
+
+/* ── Mobile: NAV ── */
+@media (max-width: 480px) {
+  :root { --nav-h: 60px; }
+
+  .nav-inner {
+    padding: 0 1.1rem;
+  }
+
+  .logo-text {
+    font-size: 1.05rem;
+  }
+
+  /* Bigger hamburger tap area */
+  .nav-hamburger {
+    padding: 10px;
+    margin-right: -10px;
+  }
+
+  /* Mobile menu: full bleed, taller rows, bigger tap targets */
+  .mobile-menu {
+    padding: 0.5rem 1.1rem 1.5rem;
+  }
+
+  .mobile-link {
+    padding: 1rem 0;            /* 44 px minimum tap target */
+    font-size: 1.1rem;
+  }
+
+  .mobile-cta {
+    margin-top: 0.75rem;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+}
+
+/* ── Mobile: HERO ── */
+@media (max-width: 480px) {
+  .hero {
+    min-height: 100svh;
+    min-height: -webkit-fill-available; /* iOS Safari fallback */
+  }
+
+  .hero-content {
+    padding-top: calc(var(--nav-h) + 3rem);
+    padding-bottom: 5rem;
+    padding-inline: 1.25rem;
+  }
+
+  .hero-heading {
+    font-size: clamp(2.4rem, 10vw, 3.4rem);
+    max-width: 100%;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    min-height: 52px;            /* comfortable thumb tap */
+  }
+}
+
+/* ── Mobile: TRUST BAR ── */
+@media (max-width: 600px) {
+  .trust-bar {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem;
+  }
+
+  .trust-item {
+    text-align: center;
+  }
+
+  .trust-divider { display: none; }
+}
+
+@media (max-width: 380px) {
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Mobile: ABOUT ── */
+@media (max-width: 480px) {
+  .about-section {
+    padding-block: 3.5rem;
+  }
+
+  .about-inner {
+    gap: 2rem;
+  }
+
+  .about-media img {
+    aspect-ratio: 3/2;
+    border-radius: 12px;
+  }
+
+  .about-badge {
+    padding: 0.75rem 1.1rem;
+    border-radius: 10px;
+  }
+
+  .badge-number {
+    font-size: 1.8rem;
+  }
+
+  .about-text .section-heading {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+  }
+}
+
+/* ── Mobile: PUPPIES CAROUSEL ── */
+@media (max-width: 640px) {
+  .puppies-section {
+    padding-block: 3rem;
+  }
+
+  .carousel-track {
+    /* One card wide, snapping */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-inline: 1.25rem;
+  }
+
+  .puppy-card {
+    flex: 0 0 calc(100vw - 2.5rem); /* full-width single card */
+    min-width: 0;
+    scroll-snap-align: start;
+    border-radius: 14px;
+  }
+
+  .puppy-img-wrap {
+    aspect-ratio: 3/2;
+  }
+
+  .puppy-info {
+    padding: 1.25rem;
+  }
+
+  .puppy-name {
+    font-size: 1.4rem;
+  }
+
+  .puppy-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Bigger carousel nav buttons */
+  .carousel-btn {
+    width: 46px;
+    height: 46px;
+    font-size: 1rem;
+  }
+
+  .carousel-controls {
+    margin-top: 1.25rem;
+    gap: 0.75rem;
+  }
+
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* ── Mobile: PARENTS ── */
+@media (max-width: 480px) {
+  .parents-section {
+    padding-block: 3.5rem;
+  }
+
+  .parents-grid {
+    gap: 1.5rem;
+  }
+
+  .parent-card {
+    border-radius: 12px;
+  }
+
+  .parent-card img {
+    aspect-ratio: 4/3;
+  }
+
+  .parent-info {
+    padding: 1.25rem;
+  }
+}
+
+/* ── Mobile: PROCESS (How It Works) ── */
+@media (max-width: 480px) {
+  .process-section {
+    padding-block: 3.5rem;
+    padding-inline: 1.25rem;
+  }
+
+  .process-inner {
+    gap: 2.5rem;
+  }
+
+  .process-img img {
+    aspect-ratio: 4/3;
+    border-radius: 12px;
+  }
+
+  .process-list {
+    gap: 1.5rem;
+  }
+
+  .process-list li {
+    gap: 1rem;
+  }
+
+  .step-num {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .step-content strong {
+    font-size: 1.05rem;
+  }
+}
+
+/* ── Mobile: CONTACT ── */
+@media (max-width: 480px) {
+  .contact-section {
+    padding-block: 3.5rem;
+    padding-inline: 1.25rem;
+  }
+
+  .contact-intro .section-heading {
+    font-size: clamp(1.9rem, 7vw, 2.5rem);
+    text-align: center;
+  }
+
+  .contact-intro p {
+    text-align: center;
+  }
+
+  .contact-details {
+    align-items: center;
+  }
+
+  .contact-form {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 1rem;          /* Prevents iOS zoom on focus */
+    padding: 0.85rem 1rem;
+    min-height: 48px;         /* 44px+ tap target */
+    border-radius: 10px;
+  }
+
+  .btn-full {
+    min-height: 52px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Mobile: FOOTER ── */
+@media (max-width: 480px) {
+  .site-footer {
+    padding-block: 3rem 2rem;
+    padding-inline: 1.25rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .footer-nav a {
+    font-size: 0.95rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+  }
+}
+
+/* ── Utilities: Touch-friendly links / buttons ── */
+@media (max-width: 768px) {
+  /* Ensure all interactive elements have sufficient tap targets */
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Slightly reduce section spacing on tablet range */
+  .about-section,
+  .puppies-section,
+  .parents-section,
+  .contact-section {
+    padding-block: clamp(3rem, 8vw, 5rem);
+  }
+
+  /* Make section headings a bit tighter on small screens */
+  .section-heading {
+    font-size: clamp(1.7rem, 6vw, 2.8rem);
+  }
+
+  /* Prevent long words from overflowing */
+  h1, h2, h3, p {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
