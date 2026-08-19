@@ -1,5 +1,104 @@
 'use strict';
 
+// ── Footer year ──────────────────────────────────────────────────────────────────
+const copyrightYear = document.getElementById('copyrightYear');
+if (copyrightYear) copyrightYear.textContent = new Date().getFullYear();
+
+// ── Top bar height sync ─────────────────────────────────────────────────────────
+// .site-nav and .hero-content read --top-bar-h to sit below the Instagram bar
+// instead of underneath it; measured live since the bar's height can change
+// (e.g. the handle text wrapping to a second line on narrow screens).
+const topBar = document.getElementById('topBar');
+function syncTopBarHeight() {
+  document.documentElement.style.setProperty('--top-bar-h', `${topBar.offsetHeight}px`);
+}
+if (topBar) {
+  syncTopBarHeight();
+  window.addEventListener('resize', syncTopBarHeight);
+}
+
+// ── Hero text wrap ──────────────────────────────────────────────────────────────
+// Parks the .hero-shape float on the puppy's face so the copy curves around it.
+// The source photo is square but the hero box is not, so object-fit crops a
+// different slice at every viewport width; percentage-based shape-outside values
+// drift by 80px+ between an 850px and a 1440px window, which makes the wrap look
+// accidental rather than deliberate. Measuring the rendered box keeps the circle
+// locked to the face at any size. The float is display:none below 769px, where
+// there is no room for text beside the dog, and this bails out there.
+//
+// Face sits at ~(52%, 45%) of the source frame; the head is ~24% of its width.
+// Those three constants are the only things tied to this particular photo — swap
+// the hero image and they need re-measuring.
+const FACE_X = 0.52;
+const FACE_Y = 0.45;
+const FACE_R = 0.24;
+
+function fitHeroShape() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const img = hero.querySelector('.hero-img');
+  const shape = hero.querySelector('.hero-shape');
+  const content = hero.querySelector('.hero-content');
+  if (!img || !shape || !content) return;
+  if (getComputedStyle(shape).display === 'none') return;
+  if (!img.naturalWidth) return;
+
+  const box = img.getBoundingClientRect();
+  const cs = getComputedStyle(content);
+  const cb = content.getBoundingClientRect();
+  const contentRight = cb.right - parseFloat(cs.paddingRight);
+  const contentTop = cb.top + parseFloat(cs.paddingTop);
+
+  // Replicate object-fit: cover to find where the frame really sits.
+  const ar = img.naturalWidth / img.naturalHeight;
+  let rw, rh;
+  if (box.width / box.height > ar) {
+    rw = box.width;
+    rh = box.width / ar;
+  } else {
+    rh = box.height;
+    rw = box.height * ar;
+  }
+
+  const op = getComputedStyle(img).objectPosition.split(' ');
+  const offX = (rw - box.width) * parseFloat(op[0]) / 100;
+  const offY = (rh - box.height) * parseFloat(op[1]) / 100;
+
+  const fx = box.left + FACE_X * rw - offX;
+  const fy = box.top + FACE_Y * rh - offY;
+  const fr = FACE_R * rw;
+
+  // The float hangs off the content box's right edge, so its width is whatever
+  // it takes to reach the left of the circle. That puts the circle's centre at
+  // exactly (fr, fr) inside the float.
+  const w = contentRight - (fx - fr);
+  if (w <= 0) return;
+
+  shape.style.width = `${w}px`;
+  shape.style.height = `${fr * 2}px`;
+  shape.style.marginTop = `${Math.max(0, (fy - fr) - contentTop)}px`;
+  shape.style.shapeOutside = `circle(${fr}px at ${fr}px ${fr}px)`;
+
+  // The circle's lower arc reaches past the copy and squeezed the two buttons
+  // onto separate rows. Nothing below the paragraph needs carving, so clip the
+  // float there. This only ever shrinks it, so the copy above cannot reflow and
+  // start an oscillation.
+  const sub = hero.querySelector('.hero-sub');
+  if (sub) {
+    const spare = sub.getBoundingClientRect().bottom - shape.getBoundingClientRect().top;
+    if (spare > 0 && spare < fr * 2) shape.style.height = `${spare}px`;
+  }
+}
+
+const heroImg = document.querySelector('.hero-img');
+if (heroImg) {
+  fitHeroShape();
+  heroImg.addEventListener('load', fitHeroShape);
+  window.addEventListener('load', fitHeroShape);
+  window.addEventListener('resize', fitHeroShape);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeroShape);
+}
+
 // ── Scroll-aware nav ──────────────────────────────────────────────────────────
 const nav = document.getElementById('siteNav');
 function updateNav() {

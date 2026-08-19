@@ -48,6 +48,7 @@
   /* Layout */
   --max-width: 1180px;
   --nav-h: 68px;
+  --top-bar-h: 45px; /* static fallback; index.js measures the real height on load/resize */
 
   /* Z-index scale */
   --z-sticky: 100;
@@ -212,7 +213,7 @@ p { text-wrap: pretty; max-width: 68ch; }
 /* ============ NAV ============ */
 .site-nav {
   position: fixed;
-  top: 0;
+  top: var(--top-bar-h);
   left: 0;
   width: 100%;
   z-index: var(--z-sticky);
@@ -248,22 +249,15 @@ p { text-wrap: pretty; max-width: 68ch; }
 .logo-mark {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
-  background: var(--col-primary);
-  color: var(--col-bg);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  display: grid;
-  place-items: center;
+  border-radius: 50%;
+  background: var(--col-bg);
+  object-fit: cover;
   flex-shrink: 0;
 }
 
 .logo-mark.sm {
   width: 34px;
   height: 34px;
-  font-size: 0.75rem;
 }
 
 .logo-text {
@@ -277,12 +271,6 @@ p { text-wrap: pretty; max-width: 68ch; }
 .site-nav:not(.scrolled) .logo-text,
 .site-nav:not(.scrolled) .nav-links a:not(.nav-cta) {
   color: var(--col-bg);
-}
-
-.site-nav:not(.scrolled) .logo-mark {
-  background: oklch(1 0 0 / 0.2);
-  color: var(--col-bg);
-  border: 1px solid oklch(1 0 0 / 0.3);
 }
 
 .nav-links {
@@ -304,14 +292,16 @@ p { text-wrap: pretty; max-width: 68ch; }
   position: absolute;
   bottom: -2px;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 1px;
   background: var(--col-accent);
-  transition: width var(--dur-fast) var(--ease-out);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 @media (hover: hover) {
-  .nav-links a:not(.nav-cta):hover::after { width: 100%; }
+  .nav-links a:not(.nav-cta):hover::after { transform: scaleX(1); }
 }
 
 .nav-cta {
@@ -391,7 +381,7 @@ p { text-wrap: pretty; max-width: 68ch; }
 /* ============ HERO ============ */
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: min(100svh, 780px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -401,13 +391,15 @@ p { text-wrap: pretty; max-width: 68ch; }
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: var(--col-ink);
+  overflow: hidden;
 }
 
 .hero-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 20%;
 }
 
 .hero-overlay {
@@ -426,8 +418,26 @@ p { text-wrap: pretty; max-width: 68ch; }
   z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: calc(var(--nav-h) + var(--sp-xl)) var(--sp-md) var(--sp-2xl);
+  /* Tighter, more even than the old deep top pad, which pushed the type
+     block below the dog instead of alongside it. */
+  padding-inline: var(--sp-md);
+  padding-block: calc(var(--nav-h) + var(--top-bar-h) + var(--sp-md)) var(--sp-lg);
   width: 100%;
+}
+
+/* Invisible float that curves the copy around the puppy's face on desktop.
+   fitShape() in index.js overwrites width/height/shape-outside with values
+   measured off the photo's rendered box — the square source is cropped
+   differently at every width, so percentages here drift by 80px+ between a
+   850px and a 1440px window and the wrap stops looking deliberate. */
+.hero-shape {
+  display: none;
+  float: right;
+  shape-margin: 1.4rem;
+  pointer-events: none;
+  width: 44%;
+  height: 40vh;
+  shape-outside: circle(46% at 42% 50%);
 }
 
 .hero-tag {
@@ -436,15 +446,20 @@ p { text-wrap: pretty; max-width: 68ch; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: oklch(0.720 0.130 60);
-  margin-bottom: var(--sp-sm);
+  margin-bottom: var(--sp-xs);
 }
 
 .hero-heading {
-  font-size: var(--step-5);
+  /* Sized against the channel left of the dog rather than the raw viewport:
+     --step-5 broke "Raised with love." into four orphaned lines anywhere
+     between ~850px and ~1150px wide. This holds two lines up to 1920px.
+     text-wrap:initial drops the inherited `balance`, which fought the float. */
+  font-size: clamp(2rem, 5.4vw - 0.4rem, 4.2rem);
+  text-wrap: initial;
   color: var(--col-bg);
-  margin-bottom: var(--sp-sm);
+  margin-bottom: var(--sp-xs);
   letter-spacing: -0.025em;
-  max-width: 14ch;
+  max-width: none;
 }
 
 .hero-heading em {
@@ -456,8 +471,9 @@ p { text-wrap: pretty; max-width: 68ch; }
 .hero-sub {
   font-size: var(--step-1);
   color: oklch(1 0 0 / 0.80);
-  max-width: 48ch;
-  margin-bottom: var(--sp-lg);
+  max-width: 58ch;
+  text-wrap: initial;
+  margin-bottom: var(--sp-md);
   font-weight: 300;
   line-height: 1.6;
 }
@@ -501,6 +517,45 @@ p { text-wrap: pretty; max-width: 68ch; }
   0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
   50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
   100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
+}
+
+/* Desktop "dissolve": the source photo is a tight square portrait, so
+   stretching it edge-to-edge reads as an over-zoomed crop. Instead it hangs
+   on the right at full height and its left edge is masked away, melting into
+   a solid ink field rather than ending on a hard vertical line. The type sits
+   on the clean side; the copy curves past the puppy's cheek. */
+@media (min-width: 769px) {
+  .hero-shape { display: block; }
+
+  .hero-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 62%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+            mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      oklch(0.185 0.018 155 / 0.90) 0%,
+      oklch(0.185 0.018 155 / 0.78) 40%,
+      oklch(0.185 0.018 155 / 0.42) 66%,
+      oklch(0.185 0.018 155 / 0.28) 100%
+    );
+  }
+}
+
+/* Below the dissolve breakpoint the photo is full-bleed and there is no text
+   channel to squeeze into, so the headline goes back to the full display
+   scale. (≤480px narrows it again further down this file.) */
+@media (max-width: 768px) {
+  .hero-heading { font-size: var(--step-5); }
+  .hero-sub { max-width: 48ch; }
 }
 
 /* ============ TRUST BAR ============ */
@@ -1101,6 +1156,17 @@ p { text-wrap: pretty; max-width: 68ch; }
   flex-shrink: 0;
 }
 
+.contact-detail a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .contact-detail a:hover { border-bottom-color: var(--col-accent); }
+}
+
 /* Form */
 .contact-form {
   background: var(--col-surface);
@@ -1226,9 +1292,6 @@ p { text-wrap: pretty; max-width: 68ch; }
 }
 
 .footer-brand .logo-mark {
-  background: oklch(1 0 0 / 0.1);
-  color: oklch(1 0 0 / 0.8);
-  border: 1px solid oklch(1 0 0 / 0.15);
   margin-top: 4px;
 }
 
@@ -1358,7 +1421,7 @@ p { text-wrap: pretty; max-width: 68ch; }
   }
 
   .hero-content {
-    padding-top: calc(var(--nav-h) + 3rem);
+    padding-top: calc(var(--nav-h) + var(--top-bar-h) + 3rem);
     padding-bottom: 5rem;
     padding-inline: 1.25rem;
   }
