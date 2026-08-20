@@ -1,23 +1,23 @@
 /* ============================================================
    CALI DOODLES — Design System
-   Palette: Forest Sage primary · Amber Honey accent · Pure white bg
+   Palette: Harbor Blue-Grey primary · Amber Honey accent · Pure white bg
    Typography: Libre Baskerville (display) + Figtree (body/ui)
-   Strategy: Committed — sage carries the brand, white is pure
+   Strategy: Committed — the blue-grey carries the brand, white is pure
    ============================================================ */
 
 :root {
   /* Palette — OKLCH */
   --col-bg:        oklch(1.000 0.000 0);          /* Pure white — no hidden warmth */
-  --col-surface:   oklch(0.975 0.008 150);        /* Faint sage-tinted surface */
-  --col-surface-2: oklch(0.960 0.012 150);        /* Slightly deeper, for alternating sections */
-  --col-primary:   oklch(0.420 0.085 155);        /* Forest sage — deep, grounded */
-  --col-primary-light: oklch(0.560 0.072 155);    /* Lighter sage for hover states */
+  --col-surface:   oklch(0.975 0.004 245);        /* Faint blue-grey tinted surface */
+  --col-surface-2: oklch(0.960 0.007 245);        /* Slightly deeper, for alternating sections */
+  --col-primary:   oklch(0.420 0.047 245);        /* Harbor blue-grey — deep, quiet */
+  --col-primary-light: oklch(0.560 0.040 245);    /* Lighter blue-grey for hover states */
   --col-accent:    oklch(0.720 0.130 60);         /* Amber honey — warm, confident */
   --col-accent-dk: oklch(0.580 0.140 55);         /* Deeper amber for hover */
-  --col-ink:       oklch(0.185 0.018 155);        /* Near-black with sage lean */
-  --col-ink-mid:   oklch(0.420 0.022 155);        /* Mid-tone, muted */
-  --col-ink-muted: oklch(0.580 0.018 155);        /* Lighter muted text */
-  --col-border:    oklch(0.890 0.016 150);        /* Soft sage border */
+  --col-ink:       oklch(0.185 0.010 245);        /* Near-black with a cool lean */
+  --col-ink-mid:   oklch(0.420 0.012 245);        /* Mid-tone, muted */
+  --col-ink-muted: oklch(0.580 0.010 245);        /* Lighter muted text */
+  --col-border:    oklch(0.890 0.009 245);        /* Soft blue-grey border */
 
   /* Typography */
   --font-display: 'Libre Baskerville', Georgia, serif;
@@ -407,9 +407,9 @@ p { text-wrap: pretty; max-width: 68ch; }
   inset: 0;
   background: linear-gradient(
     to bottom,
-    oklch(0.185 0.018 155 / 0.35) 0%,
-    oklch(0.185 0.018 155 / 0.65) 60%,
-    oklch(0.185 0.018 155 / 0.80) 100%
+    oklch(0.185 0.010 245 / 0.35) 0%,
+    oklch(0.185 0.010 245 / 0.65) 60%,
+    oklch(0.185 0.010 245 / 0.80) 100%
   );
 }
 
@@ -542,10 +542,10 @@ p { text-wrap: pretty; max-width: 68ch; }
   .hero-overlay {
     background: linear-gradient(
       to right,
-      oklch(0.185 0.018 155 / 0.90) 0%,
-      oklch(0.185 0.018 155 / 0.78) 40%,
-      oklch(0.185 0.018 155 / 0.42) 66%,
-      oklch(0.185 0.018 155 / 0.28) 100%
+      oklch(0.185 0.010 245 / 0.90) 0%,
+      oklch(0.185 0.010 245 / 0.78) 40%,
+      oklch(0.185 0.010 245 / 0.42) 66%,
+      oklch(0.185 0.010 245 / 0.28) 100%
     );
   }
 }
@@ -772,7 +772,7 @@ p { text-wrap: pretty; max-width: 68ch; }
 
 @media (hover: hover) {
   .puppy-card:hover {
-    box-shadow: 0 8px 32px oklch(0.185 0.018 155 / 0.10);
+    box-shadow: 0 8px 32px oklch(0.185 0.010 245 / 0.10);
   }
 }
 
@@ -811,7 +811,7 @@ p { text-wrap: pretty; max-width: 68ch; }
 }
 
 .puppy-status.reserved {
-  background: oklch(0.75 0.01 155);
+  background: oklch(0.75 0.006 245);
   color: var(--col-bg);
 }
 
@@ -1206,7 +1206,7 @@ p { text-wrap: pretty; max-width: 68ch; }
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--col-primary);
-  box-shadow: 0 0 0 3px oklch(0.420 0.085 155 / 0.15);
+  box-shadow: 0 0 0 3px oklch(0.420 0.047 245 / 0.15);
 }
 
 .form-group input:user-valid:not(:placeholder-shown) {
