@@ -284,10 +284,15 @@ p { text-wrap: pretty; max-width: 68ch; }
   font-weight: 500;
   color: var(--col-ink);
   position: relative;
+}
+
+/* Room for the hover underline — plain links only. Applied to every nav link
+   it also hit .nav-cta, and beat that rule's own padding on specificity. */
+.nav-links a:not(.nav-cta) {
   padding-bottom: 2px;
 }
 
-.nav-links a::after {
+.nav-links a:not(.nav-cta)::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -305,16 +310,19 @@ p { text-wrap: pretty; max-width: 68ch; }
 }
 
 .nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--col-accent);
   color: oklch(0.15 0 0) !important;
   padding: 0.55rem 1.2rem;
   border-radius: 8px;
   font-weight: 600;
   font-size: var(--step--1) !important;
+  line-height: 1;
 }
 @media (hover: hover) {
   .nav-cta:hover { background: var(--col-accent-dk); }
-  .nav-cta:hover::after { display: none; }
 }
 
 .nav-hamburger {
