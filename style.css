@@ -571,7 +571,9 @@ p { text-wrap: pretty; max-width: 68ch; }
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: var(--sp-sm) var(--sp-lg);
+  /* Tighter column gap than the original four-item bar needed — five items
+     wrapped to a second row at every width with --sp-lg here. */
+  gap: var(--sp-sm) var(--sp-md);
 }
 
 .trust-item {
@@ -601,10 +603,22 @@ p { text-wrap: pretty; max-width: 68ch; }
   flex-shrink: 0;
 }
 
-@media (max-width: 640px) {
+/* Five items only fit on one line above ~1100px. Below that the row wraps,
+   which used to strand a divider at the start of the second line. */
+@media (max-width: 1099px) {
   .trust-divider { display: none; }
+}
+
+@media (max-width: 640px) {
   .trust-inner { gap: var(--sp-md); }
   .trust-item { min-width: 140px; }
+}
+
+/* At phone widths "Temperament Matched" is too wide to pair with anything, so
+   the 140px min-width left an uneven 2-1-1-1 stack. One per row reads evenly. */
+@media (max-width: 560px) {
+  .trust-inner { flex-direction: column; }
+  .trust-item { min-width: 0; }
 }
 
 /* ============ SECTION SHARED ============ */
@@ -975,39 +989,6 @@ p { text-wrap: pretty; max-width: 68ch; }
   color: oklch(0.28 0.10 220);
 }
 
-.parent-health {
-  background: var(--col-surface);
-  border-radius: 10px;
-  padding: var(--sp-sm);
-}
-
-.health-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--col-ink-muted);
-  margin-bottom: 0.5rem;
-  max-width: none;
-}
-
-.parent-health ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.3rem 1rem;
-}
-
-.parent-health li {
-  font-size: var(--step--1);
-  color: var(--col-ink-mid);
-}
-
-.parent-health li::before {
-  content: '✓ ';
-  color: var(--col-primary);
-  font-weight: 700;
-}
-
 .parent-bio {
   font-size: var(--step--1);
   color: var(--col-ink-mid);
@@ -1017,7 +998,6 @@ p { text-wrap: pretty; max-width: 68ch; }
 
 @media (max-width: 720px) {
   .parents-grid { grid-template-columns: 1fr; }
-  .parent-health ul { grid-template-columns: 1fr; }
 }
 
 /* ============ PROCESS ============ */
@@ -1458,22 +1438,11 @@ p { text-wrap: pretty; max-width: 68ch; }
     padding: 1.75rem 1.25rem;
   }
 
-  .trust-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem 1rem;
-  }
-
   .trust-item {
     text-align: center;
   }
 
   .trust-divider { display: none; }
-}
-
-@media (max-width: 380px) {
-  .trust-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ── Mobile: ABOUT ── */
