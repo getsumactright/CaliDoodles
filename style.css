@@ -47,7 +47,7 @@
 
   /* Layout */
   --max-width: 1180px;
-  --nav-h: 68px;
+  --nav-h: 84px;
   --top-bar-h: 45px; /* static fallback; index.js measures the real height on load/resize */
 
   /* Z-index scale */
@@ -247,28 +247,24 @@ p { text-wrap: pretty; max-width: 68ch; }
 }
 
 .logo-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--col-bg);
-  object-fit: cover;
+  /* Transparent PNG — no backing plate or radius, so it sits directly on
+     whatever is behind it: the hero photo, the white nav, the dark footer. */
+  width: auto;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
-.logo-mark.sm {
-  width: 34px;
-  height: 34px;
+/* Nav gets the badge large enough to carry the brand on its own, since the
+   wordmark text span is gone. The footer keeps its quieter size. */
+.nav-logo .logo-mark {
+  height: 68px;
 }
 
-.logo-text {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--col-ink);
+.logo-mark.sm {
+  height: 44px;
 }
 
 /* On hero (not scrolled), nav content is white */
-.site-nav:not(.scrolled) .logo-text,
 .site-nav:not(.scrolled) .nav-links a:not(.nav-cta) {
   color: var(--col-bg);
 }
@@ -1370,15 +1366,16 @@ p { text-wrap: pretty; max-width: 68ch; }
 
 /* ── Mobile: NAV ── */
 @media (max-width: 480px) {
-  :root { --nav-h: 60px; }
+  :root { --nav-h: 68px; }
 
   .nav-inner {
     padding: 0 1.1rem;
   }
 
-  .logo-text {
-    font-size: 1.05rem;
-  }
+  /* Scaled to the shorter mobile bar. Must be nav-scoped to outrank the
+     .nav-logo .logo-mark rule above. */
+  .nav-logo .logo-mark { height: 52px; }
+  .logo-mark.sm { height: 40px; }
 
   /* Bigger hamburger tap area */
   .nav-hamburger {
