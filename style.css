@@ -725,7 +725,10 @@ p { text-wrap: pretty; max-width: 68ch; }
     grid-template-columns: 1fr;
     gap: var(--sp-lg);
   }
-  .about-media img { aspect-ratio: 16/9; }
+  /* Square once the layout stacks. The old 16/9 and 3/2 letterboxes were
+     sized for a landscape stock photo; against a portrait puppy shot they
+     clipped the head and paws. */
+  .about-media img { aspect-ratio: 1/1; }
   .about-badge { right: var(--sp-sm); }
   .about-text .section-heading { text-align: center; }
   .about-text { align-items: center; text-align: center; }
@@ -1456,7 +1459,6 @@ p { text-wrap: pretty; max-width: 68ch; }
   }
 
   .about-media img {
-    aspect-ratio: 3/2;
     border-radius: 12px;
   }
 
